@@ -17,7 +17,7 @@ function onOpen(e) {
 };
 
 function doGet(e) {
-  var html = HtmlService.createTemplateFromFile('Sidebar')
+  var html = HtmlService.createTemplateFromFile('sidebar')
     .evaluate();
 
   html
