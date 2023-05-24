@@ -21,7 +21,7 @@ function doGet(e) {
     .evaluate();
 
   html
-    .setTitle('Group Creator')
+    .setTitle('Group Assigner')
     .setWidth(300);
     
   SpreadsheetApp.getUi() // Or DocumentApp or SlidesApp or FormApp.     
