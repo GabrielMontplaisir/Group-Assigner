@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Group Creator</title>
+    <base target="_top" />
+    <?!= include('css'); ?>
+  </head>
+  <body class="d-flex flex-column min-vh-100">
+    <!-- Header & Navigation -->
+    <header class="bg-primary-subtle py-1 px-3">
+      <nav class="navbar">
+        <h1 class="m-0">Group Creator</h1>
+        <button
+          class="navbar-toggler border-0"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Settings Menu -->
+        <section
+          class="offcanvas offcanvas-end"
+          data-bs-backdrop="false"
+          tabindex="-1"
+          id="offcanvasNavbar"
+          aria-labelledby="offcanvasNavbarLabel"
+        >
+          <header class="offcanvas-header bg-primary-subtle py-2 px-3">
+            <h2 class="offcanvas-title h1" id="offcanvasNavbarLabel">
+              Settings
+            </h2>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </header>
+          <div class="offcanvas-body">
+            <!-- Properties Settings -->
+            <form>
+              <label for="num-sessions" class="form-label"
+                >Number of sessions per participant:
+              </label>
+              <input
+                type="number"
+                id="num-sessions"
+                class="mb-3 border-0 border-bottom border-2 border-primary-subtle"
+                name="sessions"
+                min="1"
+                oninput="value = Math.trunc(value)"
+                placeholder="1-10"
+                aria-describedby="sessions-description"
+                value="<?"
+                ="getProperty(NUM_SESSIONS)?"
+              />>
+              <i
+                id="sessions-description"
+                class="bi bi-info-circle ms-2"
+                data-bs-toggle="tooltip"
+                data-bs-title='(e.g. In how many "workshops" will the person participate?)'
+              ></i>
+              <label for="num-choices" class="form-label"
+                >Max choice selections per participant:
+              </label>
+              <input
+                type="number"
+                id="num-choices"
+                class="mb-3 border-0 border-bottom border-2 border-primary-subtle"
+                name="choices"
+                min="1"
+                oninput="value = Math.trunc(value)"
+                placeholder="1-10"
+                aria-describedby="choices-description"
+                value="<?"
+                ="getProperty(NUM_CHOICES)?"
+              />>
+              <i
+                id="choices-description"
+                class="bi bi-info-circle ms-2"
+                data-bs-toggle="tooltip"
+                data-bs-title="(e.g. How many options did the participant select on the form?)"
+              ></i>
+              <button type="button" id="saveBtn" class="btn btn-primary my-3">
+                Save
+              </button>
+            </form>
+
+            <!-- Other Settings -->
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#resetPropsModal"
+            >
+              Reset Document Properties
+            </button>
+          </div>
+        </section>
+      </nav>
+    </header>
+
+    <!-- Modal for Reset Properties-->
+    <div
+      class="modal fade"
+      id="resetPropsModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              Reset Properties?
+            </h1>
+          </div>
+          <div class="modal-body">
+            This will erase all participant and session data. Do you wish to
+            continue?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              id="resetBtn"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Yes, I understand
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Page -->
+    <main class="p-2 mb-auto">
+      <!-- Button for Instructions Offcanvas -->
+      <section class="card border-primary-subtle mb-2">
+        <div class="card-body">
+          Don't know where to start?
+          <button
+            class="btn btn-info"
+            data-bs-toggle="offcanvas"
+            href="#instructions"
+            role="button"
+            aria-controls="instructions"
+          >
+            Show Instructions
+          </button>
+        </div>
+      </section>
+
+      <section class="card border-primary-subtle">
+        <div class="card-body">
+          <!-- Assign Participants Button -->
+          <p class="m-0">Assign sessions to participants:</p>
+          <button class="btn btn-primary mb-3" id="assignBtn" type="button">
+            Assign Participants
+          </button>
+
+          <!-- Fill remaining sections -->
+          <p class="m-0">Open slots remaining, or want to fill randomly?</p>
+          <button class="btn btn-primary" id="fillBtn" type="button">
+            Assign Randomly
+          </button>
+        </div>
+      </section>
+
+      <div class="d-grid my-2">
+        <button type="button" id="eraseBtn" class="btn btn-warning">
+          Erase Assignments
+        </button>
+      </div>
+
+      <!-- Instructions Offcanvas -->
+      <div
+        class="offcanvas offcanvas-start"
+        tabindex="-1"
+        id="instructions"
+        aria-labelledby="instructionsHeader"
+      >
+        <header class="offcanvas-header bg-primary-subtle py-2 px-3">
+          <h2 class="offcanvas-title h1" id="instructionsHeader">
+            Instructions
+          </h2>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </header>
+        <div class="offcanvas-body mb-5 pb-5">
+          <p>
+            <span class="text-danger">Rule of thumb:</span> If it's coloured or
+            has a background, do not touch. You may edit the values where the
+            background is blank. Some tabs or sections have been protected to
+            mitigate user error.
+          </p>
+          <ol>
+            <li>
+              In <span class="text-success">Participant Setup</span>, enter the
+              participants' grade, email, homeroom, last name and first name (in
+              that order).
+            </li>
+            <li>
+              In <span class="text-success">Session Setup</span>, enter the
+              workshop name, room # & participant limit. Feel free to add the
+              day's schedule. (It doesn´t play a role for the add-on). Do not
+              add anything to the right of the Participant Limit. These cells
+              will be populated as you use the add-on.
+            </li>
+            <li>
+              Under <span class="text-info">Settings</span> (found under the
+              hamburger icon), set the values that you need, and click Save.
+              This will initialize most of the data for the add-on.
+            </li>
+            <li>
+              Open <span class="text-success">Session Setup</span> again, where
+              you will find some checkboxes. By default, they will also be set
+              to <span class="text-primary">TRUE</span>. Toggle these as
+              necessary to indicate which sessions are only available for
+              certain times (e.g. if a session is only available in the morning,
+              uncheck the later ones).These values will save automatically.
+            </li>
+            <li>
+              When ready, click on
+              <span class="text-primary">Assign Participants</span> in the
+              sidebar. The add-on will assign participants to as many sessions
+              as possible: First by top preferences, then by availability. It's
+              possible it won't be able to assign all participants. If this
+              happens, see step 6 & 7.
+            </li>
+            <li>
+              You can assign sessions manually to participants under
+              <span class="text-success">Participant Assignments</span>. Just
+              like the session checkboxes, assignments will save automatically
+              when updated.
+            </li>
+            <li>
+              If you would like to randomly allocate workshops to participants
+              who still have open slots, click on
+              <span class="text-primary">Assign Randomly</span>. This will
+              provide a random workshop (with open slots) to the remaining
+              participants. If all works as planned, then all participants
+              should have sessions assigned to them.
+            </li>
+          </ol>
+        </div>
+      </div>
+    </main>
+
+    <!-- Toast -->
+    <div
+      class="toast hide align-items-center text-white border-0 bottom-0 left-0"
+      role="alert"
+      id="toast"
+      aria-live="assertive"
+      aria-atomic="true"
+    >
+      <div class="d-flex">
+        <div class="toast-body" id="result"></div>
+        <button
+          type="button"
+          class="btn-close btn-close-white me-2 m-auto"
+          data-bs-dismiss="toast"
+          aria-label="Close"
+        ></button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="d-flex gap-5 align-items-center bg-primary-subtle p-3">
+      <div>
+        <p class="my-0">&copy; 2023 Gabriel Montplaisir.</p>
+        <p class="my-0">All Rights Reserved.</p>
+      </div>
+      <a
+        class="fs-4 text-dark"
+        href="https://github.com/GabrielMontplaisir/Group-Assigner"
+        target="_blank"
+        title="View on Github"
+        ><i class="bi bi-github"></i
+      ></a>
+    </footer>
+
+    <!-- Overlay when something needs to be loaded -->
+    <div id="overlay" class="d-flex align-items-center justify-content-center">
+      <div class="spinner-border text-white" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <?!= include('js'); ?>
+  </body>
+</html>
