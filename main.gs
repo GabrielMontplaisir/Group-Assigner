@@ -12,10 +12,10 @@ function getParticipants() {
   const numSessions = getProperty(NUM_SESSIONS);
 
   for (let i=1; i < data.length; i++) {
-    if (data[i][1]) {
-      participants[data[i][1]] = {
-        'name': data[i][5],
-        'homeroom': data[i][2],
+    if (data[i][1].trim()) {
+      participants[data[i][1].trim()] = {
+        'name': data[i][5].trim(),
+        'homeroom': data[i][2].trim(),
         'choices': [...new Set(data[i].slice(6))],
         'assigned': {}
       }
@@ -35,8 +35,8 @@ function getSessions() {
   const numSessions = getProperty(NUM_SESSIONS);
 
   for (let i = 1; i < data.length; i++) {
-    if (data[i][0]) {
-      sessions[data[i][0]] = {
+    if (data[i][0].trim()) {
+      sessions[data[i][0].trim()] = {
         'room': data[i][1],
         'maxParticipants': data[i][4],
         'sessions': {}
