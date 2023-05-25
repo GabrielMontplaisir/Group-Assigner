@@ -25,3 +25,18 @@ const updateValues = (sessions, choices) => {
 
   return 'Updated Settings.'
 }
+
+function eraseAssignments() {
+  getParticipants();
+
+  const sessions = getProperty(SESSIONS);
+  for (id in sessions) {
+    for (s in sessions[id].sessions) {
+      sessions[id].sessions[s].list = [];
+    }
+  }
+
+  setProperty(SESSIONS, sessions);
+
+  return "Erased participant assignments."
+}

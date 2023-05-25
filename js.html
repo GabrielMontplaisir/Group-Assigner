@@ -65,9 +65,9 @@ fillBtn.addEventListener("click", () => {
 eraseBtn.addEventListener("click", () => {
   overlay.classList.add('visible');
   google.script.run
-    .withSuccessHandler((event) => success("Erased participant assignments."))
+    .withSuccessHandler((event) => success(event))
     .withFailureHandler((event) => failure(event))
-    .updateValues();
+    .eraseAssignments();
 })
 
 function success(text) {

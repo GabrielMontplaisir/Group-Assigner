@@ -61,11 +61,9 @@ function assignParticipants() {
   const numChoices = getProperty(NUM_CHOICES);
 
   const assign = (s, id, num) => {
-    if (sessions[s].sessions[num].active === 'TRUE' && sessions[s].sessions[num].list.length < sessions[s].maxParticipants) {
-      participants[id].assigned[num] = s;
-      sessions[s].sessions[num].list.push(participants[id].name);
-      // console.log(`${count} -- Assigning session ${s} ${num} (${sessions[s].sessions[num].list.length}) to ${participants[id].name} -- Choices remaining: ${participants[id].choices} -- ${participants[id].assigned}`);
-    }
+    participants[id].assigned[num] = s;
+    sessions[s].sessions[num].list.push(participants[id].name);
+    console.log(`${count} -- Assigning session ${s} ${num} (${sessions[s].sessions[num].list.length}) to ${participants[id].name} -- Choices remaining: ${participants[id].choices} -- ${participants[id].assigned}`);
   }
 
   let count = 0;
@@ -84,13 +82,13 @@ function assignParticipants() {
         if (duplicate) continue;
 
         if (participants[id].choices[count] === s) {
-          if (!participants[id].assigned[lowest]) {
+          if (!participants[id].assigned[lowest] && sessions[s].sessions[lowest].active === 'TRUE' && sessions[s].sessions[lowest].list.length < sessions[s].maxParticipants) {
             assign(s,id,lowest);
-          } else if (second !== 0 && !participants[id].assigned[second]) {
+          } else if (second !== 0 && !participants[id].assigned[second] && sessions[s].sessions[second].active === 'TRUE' && sessions[s].sessions[second].list.length < sessions[s].maxParticipants) {
             assign(s,id,second);
           } else {
             for (num in participants[id].assigned) {
-              if (!participants[id].assigned[num]) {
+              if (!participants[id].assigned[num] && sessions[s].sessions[num].active === 'TRUE' && sessions[s].sessions[num].list.length < sessions[s].maxParticipants) {
                 assign(s,id,num);
                 break;
               };
